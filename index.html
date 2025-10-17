@@ -1,279 +1,363 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web3举报中心</title>
-    <style>
-        :root {
-            --primary: #6366f1;
-            --secondary: #8b5cf6;
-            --accent: #ec4899;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --glass: rgba(255, 255, 255, 0.1);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Web3举报中心</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --secondary: #8b5cf6;
+      --accent: #ec4899;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --glass: rgba(255, 255, 255, 0.1);
+    }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: var(--light);
-            min-height: 100vh;
-        }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: var(--light);
+      min-height: 100vh;
+    }
 
-        h1, h2 {
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 800;
-        }
+    h1,
+    h2 {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 800;
+    }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
 
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
 
-        p {
-            color: #94a3b8;
-            margin-bottom: 2rem;
-        }
+    p {
+      color: #94a3b8;
+      margin-bottom: 2rem;
+    }
 
-        #report-button {
-            padding: 12px 24px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    #report-button {
+      padding: 12px 24px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      width: 100%;
+      max-width: 300px;
+    }
 
-        #report-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
+    #report-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
 
-        #report-form {
-            display: none;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            margin-bottom: 2rem;
-        }
+    #report-form {
+      display: none;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      margin-bottom: 2rem;
+    }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-            text-align: left;
-        }
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--light);
-        }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--light);
+    }
 
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: var(--light);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: var(--light);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
 
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
-        }
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+    }
 
-        #form-container {
-            position: relative;
-            height: 120px;
-            margin-top: 2rem;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            overflow: hidden;
-        }
+    #form-container {
+      position: relative;
+      height: 120px;
+      margin-top: 2rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
 
-        #submit-btn {
-            position: absolute;
-            padding: 12px 24px;
-            background: linear-gradient(90deg, var(--accent), #f97316);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.1s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    #submit-btn {
+      position: absolute;
+      padding: 12px 24px;
+      background: linear-gradient(90deg, var(--accent), #f97316);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transition: all 0.1s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      touch-action: manipulation;
+      min-width: 120px;
+      user-select: none;
+      -webkit-user-select: none;
+    }
 
-        #submit-btn:hover {
-            transform: scale(1.05);
-        }
+    #submit-btn:hover {
+      transform: scale(1.05);
+    }
 
-        /* 添加一些Web3风格的装饰元素 */
-        .web3-decoration {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.3;
-        }
+    .web3-decoration {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.3;
+    }
 
-        .web3-decoration::before {
-            content: "";
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, var(--primary), transparent 70%);
-            top: -50px;
-            left: -50px;
-            filter: blur(30px);
-        }
+    .web3-decoration::before {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, var(--primary), transparent 70%);
+      top: -50px;
+      left: -50px;
+      filter: blur(30px);
+    }
 
-        .web3-decoration::after {
-            content: "";
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, var(--accent), transparent 70%);
-            bottom: -50px;
-            right: -50px;
-            filter: blur(30px);
-        }
-    </style>
+    .web3-decoration::after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, var(--accent), transparent 70%);
+      bottom: -50px;
+      right: -50px;
+      filter: blur(30px);
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      h2 {
+        font-size: 1.3rem;
+      }
+
+      #report-form {
+        padding: 1rem;
+      }
+
+      #form-container {
+        height: 100px;
+      }
+
+      input,
+      select,
+      textarea {
+        padding: 10px;
+      }
+
+      #submit-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="web3-decoration"></div>
-    <h1>Web3举报中心</h1>
-    <p>举报知名球球大作战主播期待</p>
+  <div class="web3-decoration"></div>
+  <h1>Web3举报中心</h1>
+  <p>举报知名球球大作战主播期待</p>
 
-    <button id="report-button">我要举报</button>
+  <button id="report-button">我要举报</button>
 
-    <div id="report-form">
-        <h2>举报表单</h2>
-        <p>请填写以下信息帮助我们处理您的举报</p>
+  <div id="report-form">
+    <h2>举报表单</h2>
+    <p>请填写以下信息帮助我们处理您的举报</p>
 
-        <div class="form-group">
-            <label for="name">您的姓名:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-
-        <div class="form-group">
-            <label for="email">电子邮箱:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-
-        <div class="form-group">
-            <label for="reason">举报原因:</label>
-            <select id="reason" name="reason">
-                <option value="spam">不尊重粉丝</option>
-                <option value="abuse">长大太帅</option>
-                <option value="privacy">技术太菜</option>
-                <option value="other">其他原因</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="details">详细说明:</label>
-            <textarea id="details" name="details" rows="4" required></textarea>
-        </div>
-
-        <div id="form-container">
-            <button id="submit-btn">提交举报</button>
-        </div>
+    <div class="form-group">
+      <label for="name">您的姓名:</label>
+      <input type="text" id="name" name="name" required>
     </div>
 
-    <script>
-        // 显示表单
-        document.getElementById('report-button').addEventListener('click', function() {
-            document.getElementById('report-form').style.display = 'block';
-        });
+    <div class="form-group">
+      <label for="email">电子邮箱:</label>
+      <input type="email" id="email" name="email" required>
+    </div>
 
-        // 逃跑的提交按钮
-        const submitBtn = document.getElementById('submit-btn');
-        const formContainer = document.getElementById('form-container');
+    <div class="form-group">
+      <label for="reason">举报原因:</label>
+      <select id="reason" name="reason">
+        <option value="spam">不尊重粉丝</option>
+        <option value="abuse">长大太帅</option>
+        <option value="privacy">技术太菜</option>
+        <option value="other">其他原因</option>
+      </select>
+    </div>
 
-        // 记录上一次的位置
-        let lastPosition = { x: 0, y: 0 };
+    <div class="form-group">
+      <label for="details">详细说明:</label>
+      <textarea id="details" name="details" rows="4" required></textarea>
+    </div>
 
-        submitBtn.addEventListener('mouseover', function() {
-            // 随机位置
-            const containerWidth = formContainer.offsetWidth - submitBtn.offsetWidth;
-            const containerHeight = formContainer.offsetHeight - submitBtn.offsetHeight;
+    <div id="form-container">
+      <button id="submit-btn">提交举报</button>
+    </div>
+  </div>
 
-            let randomX, randomY;
-            let attempts = 0;
-            const maxAttempts = 20; // 最大尝试次数防止无限循环
+  <script>
+    // 显示表单
+    document.getElementById('report-button').addEventListener('click', function() {
+      document.getElementById('report-form').style.display = 'block';
+    });
 
-            do {
-                randomX = Math.floor(Math.random() * containerWidth);
-                randomY = Math.floor(Math.random() * containerHeight);
-                attempts++;
+    // 逃跑的提交按钮
+    const submitBtn = document.getElementById('submit-btn');
+    const formContainer = document.getElementById('form-container');
 
-                // 检查是否与上次位置重叠（设定一个最小距离阈值）
-                const distance = Math.sqrt(
-                    Math.pow(randomX - lastPosition.x, 2) +
-                    Math.pow(randomY - lastPosition.y, 2)
-                );
+    // 记录上一次的位置
+    let lastPosition = {
+      x: 0,
+      y: 0
+    };
 
-                // 如果距离足够大或者尝试次数过多，则退出循环
-                if (distance > 50 || attempts >= maxAttempts) {
-                    break;
-                }
-            } while (true);
+    // 处理按钮逃跑逻辑
+    function handleButtonEscape() {
+      const containerWidth = formContainer.offsetWidth - submitBtn.offsetWidth;
+      const containerHeight = formContainer.offsetHeight - submitBtn.offsetHeight;
 
-            // 更新位置
-            submitBtn.style.left = randomX + 'px';
-            submitBtn.style.top = randomY + 'px';
-            lastPosition = { x: randomX, y: randomY };
+      let randomX, randomY;
+      let attempts = 0;
+      const maxAttempts = 20;
 
-            // 随机颜色
-            const gradients = [
-                'linear-gradient(90deg, #ec4899, #f97316)',
-                'linear-gradient(90deg, #6366f1, #8b5cf6)',
-                'linear-gradient(90deg, #10b981, #3b82f6)',
-                'linear-gradient(90deg, #f59e0b, #ef4444)',
-                'linear-gradient(90deg, #8b5cf6, #ec4899)'
-            ];
-            const randomGradient = gradients[Math.floor(Math.random() * gradients.length)];
-            submitBtn.style.background = randomGradient;
-        });
+      do {
+        randomX = Math.floor(Math.random() * containerWidth);
+        randomY = Math.floor(Math.random() * containerHeight);
+        attempts++;
 
-        // 点击后显示成功信息（虽然实际上不会提交）
-        submitBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('举报已成功提交！感谢您的反馈。');
-            document.getElementById('report-form').style.display = 'none';
-        });
-    </script>
+        const distance = Math.sqrt(
+          Math.pow(randomX - lastPosition.x, 2) +
+          Math.pow(randomY - lastPosition.y, 2)
+        );
+
+        if (distance > 50 || attempts >= maxAttempts) {
+          break;
+        }
+      } while (true);
+
+      submitBtn.style.left = randomX + 'px';
+      submitBtn.style.top = randomY + 'px';
+      lastPosition = {
+        x: randomX,
+        y: randomY
+      };
+
+      const gradients = [
+        'linear-gradient(90deg, #ec4899, #f97316)',
+        'linear-gradient(90deg, #6366f1, #8b5cf6)',
+        'linear-gradient(90deg, #10b981, #3b82f6)',
+        'linear-gradient(90deg, #f59e0b, #ef4444)',
+        'linear-gradient(90deg, #8b5cf6, #ec4899)'
+      ];
+      const randomGradient = gradients[Math.floor(Math.random() * gradients.length)];
+      submitBtn.style.background = randomGradient;
+    }
+
+    // 检测是否为移动设备
+    function isMobileDevice() {
+      return (typeof window.orientation !== "undefined") ||
+        (navigator.userAgent.indexOf('IEMobile') !== -1);
+    }
+
+    // 桌面端：鼠标悬停时逃跑
+    submitBtn.addEventListener('mouseover', function() {
+      if (!isMobileDevice()) {
+        handleButtonEscape();
+      }
+    });
+
+    // 移动端：点击时逃跑
+    submitBtn.addEventListener('touchstart', function(e) {
+      if (isMobileDevice()) {
+        e.preventDefault();
+        handleButtonEscape();
+      }
+    }, {
+      passive: false
+    });
+
+    // 点击后显示成功信息
+    submitBtn.addEventListener('click', function(e) {
+      handleButtonEscape();
+    });
+
+    // 移动端点击处理
+    submitBtn.addEventListener('touchend', function(e) {
+      handleButtonEscape();
+    });
+
+    // 防止移动端双击缩放
+    let lastTouchTime = 0;
+    document.addEventListener('touchend', function(event) {
+      const now = (new Date()).getTime();
+      if (now - lastTouchTime <= 300) {
+        event.preventDefault();
+      }
+      lastTouchTime = now;
+    }, false);
+  </script>
 </body>
+
 </html>
