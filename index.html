@@ -222,16 +222,39 @@
         const submitBtn = document.getElementById('submit-btn');
         const formContainer = document.getElementById('form-container');
 
+        // 记录上一次的位置
+        let lastPosition = { x: 0, y: 0 };
+
         submitBtn.addEventListener('mouseover', function() {
             // 随机位置
             const containerWidth = formContainer.offsetWidth - submitBtn.offsetWidth;
             const containerHeight = formContainer.offsetHeight - submitBtn.offsetHeight;
 
-            const randomX = Math.floor(Math.random() * containerWidth);
-            const randomY = Math.floor(Math.random() * containerHeight);
+            let randomX, randomY;
+            let attempts = 0;
+            const maxAttempts = 20; // 最大尝试次数防止无限循环
 
+            do {
+                randomX = Math.floor(Math.random() * containerWidth);
+                randomY = Math.floor(Math.random() * containerHeight);
+                attempts++;
+
+                // 检查是否与上次位置重叠（设定一个最小距离阈值）
+                const distance = Math.sqrt(
+                    Math.pow(randomX - lastPosition.x, 2) +
+                    Math.pow(randomY - lastPosition.y, 2)
+                );
+
+                // 如果距离足够大或者尝试次数过多，则退出循环
+                if (distance > 50 || attempts >= maxAttempts) {
+                    break;
+                }
+            } while (true);
+
+            // 更新位置
             submitBtn.style.left = randomX + 'px';
             submitBtn.style.top = randomY + 'px';
+            lastPosition = { x: randomX, y: randomY };
 
             // 随机颜色
             const gradients = [
